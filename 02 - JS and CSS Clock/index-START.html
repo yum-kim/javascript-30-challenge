@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+
+
+  <style>
+    html {
+      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform-origin: 100%;
+    }
+
+    .hour-hand{background-color: #fff;}
+    .min-hand{background-color: orange;}
+    .second-hand{background-color: #000;}
+
+  </style>
+
+  <script>
+    //구현할 것 : 현재 시간을 시,분.초침으로 표현하기
+
+    //1) 현재 시간 알아내기
+    var hourHand = document.querySelector(".hour-hand");
+    var minHand = document.querySelector(".min-hand");
+    var secHand = document.querySelector(".second-hand");
+
+    //2) 현재 시간에 맞게 각 침의 위치를 조정하기
+    function clock(){
+      var hour = new Date().getHours();
+      var min = new Date().getMinutes();
+      var sec = new Date().getSeconds();
+
+      console.log(hour, min, sec);
+
+      //침의 위치를 시간에 맞게 이동시켜줘야함
+      secHand.style.transform = `rotate(${((sec / 60) * 360) + 90}deg)`;
+      minHand.style.transform = `rotate(${((min / 60) * 360) + 90}deg)`;
+      hourHand.style.transform = `rotate(${(((hour > 12 ? hour - 12: hour) / 12) * 360) + 90}deg)`;
+    }
+
+    //3) 1초마다 실행해서 시간 조정하기!
+    setInterval(clock , 1000);
+
+    clock();
+
+  </script>
+</body>
+</html>
