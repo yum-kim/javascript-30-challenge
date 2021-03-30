@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+
+<body>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+  </div>
+
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+  <style>
+    /*
+      misc styles, nothing to do with CSS variables
+    */
+
+    :root {
+      --spacing: ;
+      --blur: ;
+      --bg-color: ;
+    }
+
+    body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    input {
+      width: 100px;
+    }
+  </style>
+
+  <script>
+    //* js로 CSS 변수를 업데이트해 DOM element의 CSS를 조작하기 
+
+    //1) img의 padding조절
+    //2) img의 blur조절
+    //3) img의 bgcolor조절
+
+
+    //* 해결순서!!
+    // 1. input을 조작했을 때 선택된 값을 해당 input의 value로 넣어줌
+    //2. value값이 css 변수로 실시간 업데이트 됨
+    //3. img의 css 변수에 해당하는 값에 해당 변수를 넣어줌
+
+    const $spacing = document.querySelector("#spacing");
+    const $blur = document.querySelector("#blur");
+    const $baseColor = document.querySelector("#base");
+    const $img = document.querySelector("img");
+    const $rootStyle = document.querySelector(":root");
+
+    class UpdateStyle {
+
+      updateSpacing() {
+        $rootStyle.style.setProperty("--spacing", `${this.value}px`);
+        const spacingVal = $rootStyle.style.getPropertyValue("--spacing");
+
+        $img.style.padding = `${spacingVal}`;
+      }
+
+      updateBlur() {
+        $rootStyle.style.setProperty("--blur", `${this.value}px`);
+        const blurVal = $rootStyle.style.getPropertyValue("--blur");
+
+        $img.style.filter = `blur(${blurVal})`;
+      }
+
+      updateColor() {
+        $rootStyle.style.setProperty("--bg-color", `${this.value}`);
+        const colorVal = $rootStyle.style.getPropertyValue("--bg-color");
+
+        $img.style.backgroundColor = `${colorVal}`;
+      }
+    }
+    
+    const updateStyle = new UpdateStyle();
+
+    $spacing.addEventListener("change", updateStyle.updateSpacing);
+    $blur.addEventListener("change", updateStyle.updateBlur);
+    $baseColor.addEventListener("change", updateStyle.updateColor);
+
+  </script>
+
+</body>
+
+</html>
