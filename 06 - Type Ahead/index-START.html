@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+//* 구현할 것 : 타이핑 할 때 타이핑하는 글자에 맞는 json데이터가 목록에 보여짐
+let cities;
+let suggestions = document.querySelector(".suggestions");
+let input = document.querySelector(".search");
+
+window.addEventListener("load", request);
+input.addEventListener("keyup", showPreview);
+
+/* 1) http request로 json 데이터 불러오기 */
+async function request() {
+  const obj = new XMLHttpRequest();
+
+  obj.onreadystatechange = function() {
+      if (obj.status == 200 && obj.readyState == 4) {
+        cities = JSON.parse(obj.response);
+      } else {
+        cities = null;
+      }
+  }
+
+    obj.open('get', endpoint, false); //false면 동기적으로 실행
+    obj.send();
+
+    console.log(cities);
+}
+
+/* 2) 내가 검색한 글자로 데이터 필터링하기 */
+function filterCity(searchingText) {
+  let regex = new RegExp(searchingText, 'gi');
+  let res = cities.filter(element => {
+    return element.city.match(regex) || element.state.match(regex);
+  });
+  
+  return res;
+}
+
+/* 3) 화면단에 뿌려주기 */
+async function showPreview() {
+  let res = filterCity(this.value);
+
+  let html = res.map(element => {
+    let regex = new RegExp(this.value, 'gi');
+    let cityName = element.city.replace(regex, `<span class="hl">${this.value}</span>`);
+    let stateName = element.state.replace(regex, `<span class="hl">${this.value}</span>`);
+
+    return `<li><span>${cityName}, ${stateName}</span></li>`;
+  }).join('');
+
+  console.log(html);
+
+  suggestions.innerHTML = html;
+}
+
+</script>
+</body>
+</html>
