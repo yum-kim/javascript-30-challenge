@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Array Cardio 💪💪</title>
+</head>
+<body>
+  <p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
+  <script>
+    // ## Array Cardio Day 2
+
+    const people = [
+      { name: 'Wes', year: 1988 },
+      { name: 'Kait', year: 1986 },
+      { name: 'Irv', year: 1970 },
+      { name: 'Lux', year: 2015 }
+    ];
+
+    const comments = [
+      { text: 'Love this!', id: 523423 },
+      { text: 'Super good', id: 823423 },
+      { text: 'You are the best', id: 2039842 },
+      { text: 'Ramen is my fav food ever', id: 123523 },
+      { text: 'Nice Nice Nice!', id: 542328 },
+      { text: 'Super good2222', id: 823423 },
+    ];
+
+    // Some and Every Checks
+    // Array.prototype.some() // is at least one person 19 or older?
+    // Array.prototype.every() // is everyone 19 or older?
+
+    let thisYear = new Date().getFullYear();
+
+    let some = people.some(element => thisYear - element.year >= 19);
+    let every = people.every(element => thisYear - element.year >= 19);
+    //some메서드는 배열 안 요소 중 하나라도! 주어진 판별함수를 통과하는지 테스트해서 true, false 반환! 
+    //every메서드는 배열 안 요소가 모~두 주어진 판별함수를 통과하는지 테스트해서 true, false 반환! 
+
+    console.log(some);
+    console.log(every);
+    
+    // Array.prototype.find()
+    // Find is like filter, but instead returns just the one you are looking for
+    // find the comment with the ID of 823423
+    let find = comments.find(element => element.id === 823423);
+    console.log(find);
+    //find메서드는 주어진 판별함수를 만족하는 첫!번째 요소의 값!을 반환함.
+    //없으면 undefined반환
+
+
+    // Array.prototype.findIndex()
+    // Find the comment with this ID
+    // delete the comment with the ID of 823423
+    let findIndex = comments.findIndex(element => element.id === 823423);
+    let splice = comments.splice(findIndex,1);
+    //findIndex메서드는 주어진 판별함수를 만족하는 첫!!째 요소의 인덱스!!!를 반환함
+    //-> 없으면 -1 반환.
+    //splice메서드는 start인덱스, deleteCount를 기재해 배열 내 해당하는 값을 삭제, 원본 배열을 수정한다
+
+    console.log(findIndex);
+
+  </script>
+</body>
+</html>
