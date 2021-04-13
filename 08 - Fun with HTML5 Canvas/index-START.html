@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  //* html canvas태그와 자바스크립트 canvas API 활용해 그림(경로) 그리기
+
+  var canvas = document.querySelector("#draw");
+  var ctx = canvas.getContext("2d");
+  var startX = 0;
+  var startY = 0;
+  var isDrawing = false;
+
+  console.log(ctx);
+
+  // ctx.fillStyle = "#0078d7"; //면색
+  // ctx.fillRect(0, 0, 300, 300); // 도형 (x좌표, y좌표, width, height)
+  ctx.lineWidth = "20"; //선굵기
+  ctx.strokeStyle = "orange"; //선색
+  ctx.lineJoin = 'round'; //선이 꺾이는 부분 모양
+  ctx.lineCap = 'round'; //선 끝부분 모양
+
+  canvas.addEventListener("mousedown", startDraw); //마우스 누를 때
+  canvas.addEventListener("mousemove", drawing); //마우스 움직이는 동안
+  canvas.addEventListener("mouseup", endDraw); //마우스 놓을 때
+
+  function startDraw(e) {
+    [startX, startY] = [e.offsetX, e.offsetY];
+    console.log(startX, startY);
+
+    isDrawing = true;
+  }
+
+  function drawing(e) {
+    if(!isDrawing) return;
+
+    ctx.beginPath(); //경로시작
+    ctx.moveTo(startX, startY); //그리기 시작할 좌표
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    [startX, startY] = [e.offsetX, e.offsetY];
+  }
+
+  function endDraw() {
+    isDrawing = false;
+  }
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
