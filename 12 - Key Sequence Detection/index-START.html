@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+<script>
+  //할일:: 누른 키가 콘솔창에 뜨도록 배열로 연결되어 뜨도록 하고, 비밀 키를 입력하면 유니콘이 나오도록 설정
+  var arr = [];
+  var secretCode = "unicorn";
+
+  window.addEventListener("keyup", (e) => {
+    arr.push(e.key);
+    
+    if(secretCode.indexOf(arr.join('')) > -1) {
+      console.log('secret code 등장');
+      cornify_add();
+    }
+  
+    if(secretCode.length == arr.length) {
+      arr.splice(0, 1);
+    }
+
+    console.log(arr);
+  });
+
+</script>
+</body>
+</html>
